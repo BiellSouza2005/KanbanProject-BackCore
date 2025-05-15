@@ -4,48 +4,48 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace KanbanProject.Configurations
 {
-    public class TaskConfigurations : IEntityTypeConfiguration<Entities.Task>
+    public class TaskConfigurations : IEntityTypeConfiguration<TaskItem>
     {
-        public void Configure(EntityTypeBuilder<Entities.Task> builder)
+        public void Configure(EntityTypeBuilder<TaskItem> builder)
         {
-            // Mapeia para a tabela "Tasks"
             builder.ToTable("Tasks");
 
-            // Chave primária e auto-incremento
             builder.HasKey(t => t.Id);
-            builder.Property(t => t.Id)
-                   .ValueGeneratedOnAdd();
 
-            // Name: obrigatório e com tamanho máximo
-            builder.Property(t => t.Name)
-                   .IsRequired()
-                   .HasMaxLength(200);
+            builder.Property(t => t.Description)
+                .IsRequired()
+                .HasMaxLength(200);
 
-            // Allocated: obrigatório e default = false
-            builder.Property(t => t.Allocated)
-                   .IsRequired()
-                   .HasDefaultValue(false);
+            builder.Property(t => t.ToDo).IsRequired();
+            builder.Property(t => t.Doing).IsRequired();
+            builder.Property(t => t.Done).IsRequired();
+            builder.Property(t => t.Testing).IsRequired();
+            builder.Property(t => t.Completed).IsRequired();
 
-            // Status: obrigatório e default = ToDo
-            builder.Property(t => t.Status)
-                   .IsRequired()
-                   .HasDefaultValue(Entities.TaskStatus.ToDo);
+            builder.Property(t => t.UserId).IsRequired();
+            builder.Property(t => t.AdminId).IsRequired(false);
 
-            // CreatedById: obrigatório
-            builder.Property(t => t.CreatedById)
-                   .IsRequired();
+            builder.Property(t => t.DateTimeInclusion).IsRequired();
+            builder.Property(t => t.UserInclusion)
+                .IsRequired()
+                .HasMaxLength(100);
 
-            // FK para quem criou (CreatedById)
-            builder.HasOne(t => t.CreatedBy)
-                   .WithMany()  
-                   .HasForeignKey(t => t.CreatedById)
-                   .OnDelete(DeleteBehavior.Restrict);
+            builder.Property(t => t.DateTimeChange).IsRequired();
+            builder.Property(t => t.UserChange)
+                .IsRequired()
+                .HasMaxLength(100);
 
-            // FK para quem foi atribuído (AssignedToId)
-            builder.HasOne(t => t.AssignedTo)
-                   .WithMany()  
-                   .HasForeignKey(t => t.AssignedToId)
-                   .OnDelete(DeleteBehavior.Restrict);
+            builder.Property(t => t.IsActive).IsRequired();
+
+            builder.HasOne(t => t.User)
+                .WithMany()
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Restrict); 
+
+            builder.HasOne(t => t.Admin)
+                .WithMany()
+                .HasForeignKey(t => t.AdminId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

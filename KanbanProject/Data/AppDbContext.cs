@@ -7,12 +7,12 @@ namespace KanbanProject.Data
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
-        : base(options) // Passa as opções para a classe base DbContext
+        : base(options)
         {
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Login> Logins { get; set; }
-        public DbSet<Entities.Task> Tasks { get; set; }
+        public DbSet<Entities.TaskItem> Tasks { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
