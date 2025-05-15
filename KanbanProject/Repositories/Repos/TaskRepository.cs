@@ -2,11 +2,8 @@ using KanbanProject.Data;
 using KanbanProject.Entities;
 using KanbanProject.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using Task = System.Threading.Tasks.Task;
-using TaskEntity = KanbanProject.Entities.Task;
 
-namespace KanbanProject.Repositories.Repos
+namespace KanbanProject.Repositories
 {
     public class TaskRepository : ITaskRepository
     {
@@ -17,35 +14,29 @@ namespace KanbanProject.Repositories.Repos
             _context = context;
         }
 
-        public async Task<IEnumerable<TaskEntity>> GetAllTasksAsync()
+        public async Task<IEnumerable<TaskItem>> GetAllTasksAsync()
         {
-            return await _context.Tasks
-                .Include(t => t.CreatedBy)
-                .Include(t => t.AssignedTo)
-                .ToListAsync();
+            return await _context.Tasks.ToListAsync();
         }
 
-        //public async Task<TaskEntity> GetTaskByIdAsync(int id)
-        //{
-        //    return await _context.Tasks
-        //        .Include(t => t.CreatedBy)
-        //        .Include(t => t.AssignedTo)
-        //        .FirstOrDefaultAsync(t => t.Id == id);
-        //}
-
-        public async Task AddTaskAsync(TaskEntity task)
+        public async Task<TaskItem?> GetTaskByIdAsync(int id)
         {
-            _context.Tasks.Add(task);
+            return await _context.Tasks.FindAsync(id);
+        }
+
+        public async Task AddTaskAsync(TaskItem task)
+        {
+            await _context.Tasks.AddAsync(task);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateTaskAsync(TaskEntity task)
+        public async Task UpdateTaskAsync(TaskItem task)
         {
             _context.Tasks.Update(task);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteTaskAsync(TaskEntity task)
+        public async Task DeleteTaskAsync(TaskItem task)
         {
             _context.Tasks.Remove(task);
             await _context.SaveChangesAsync();
