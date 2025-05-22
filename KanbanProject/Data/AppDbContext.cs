@@ -12,7 +12,7 @@ namespace KanbanProject.Data
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Login> Logins { get; set; }
-        public DbSet<Entities.TaskItem> Tasks { get; set; }
+        public DbSet<TaskItem> Tasks { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

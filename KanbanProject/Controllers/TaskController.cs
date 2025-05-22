@@ -19,10 +19,8 @@ namespace KanbanProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTask([FromBody] TaskCreateDTO dto)
+        public async Task<IActionResult> CreateTask([FromBody] TaskCreateDTO dto, [FromHeader(Name = "User-Inclusion")] string userInclusion)
         {
-            var userInclusion = "admin";
-
             var taskDto = await _taskService.CreateTaskAsync(dto, userInclusion);
 
             return CreatedAtAction(nameof(GetTaskById), new { id = taskDto.TaskId }, taskDto);
