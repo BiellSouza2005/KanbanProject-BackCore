@@ -37,11 +37,11 @@ namespace KanbanProject.Controllers
             return Ok(taskDto);
         }
         [HttpPut("{id}/status")]
-        public async Task<IActionResult> UpdateStatus(int id, [FromBody] TaskUpdateStatusDTO updateDto)
+        public async Task<IActionResult> UpdateStatus(int id, [FromBody] TaskUpdateDTO taskUpdateDto, [FromHeader(Name = "User-Inclusion")] string userInclusion)
         {
             try
             {
-                var updatedTask = await _taskService.UpdateTaskStatusAsync(id, updateDto.NewStatus, updateDto.UserRequesting);
+                var updatedTask = await _taskService.UpdateTaskStatusAsync(id, taskUpdateDto, userInclusion);
                 if (updatedTask == null)
                     return NotFound();
 

@@ -42,25 +42,20 @@ namespace KanbanProject.Services
             return taskEntity == null ? null : ConvertToDTO(taskEntity);
         }
 
-        public async Task<TaskResponseDTO?> UpdateTaskStatusAsync(int taskId, string newStatus, string userRequesting)
+        public async Task<TaskResponseDTO?> UpdateTaskStatusAsync(int taskId, TaskUpdateDTO taskUpdateDTO, string userInclusion)
         {
             var task = await _taskRepository.GetTaskByIdAsync(taskId);
             if (task == null || !task.IsActive)
                 return null;
 
-            string currentStatus = GetCurrentStatus(task);
-
-            if (!IsNextStatusValid(currentStatus, newStatus))
-                throw new InvalidOperationException($"Não é permitido pular status de '{currentStatus}' para '{newStatus}'.");
-
-            if (newStatus == "Completed" && !IsUserAdmin(userRequesting))
-                throw new UnauthorizedAccessException("Apenas admin pode marcar como Completed.");
-
-            ResetAllStatus(task);
-            SetStatusBoolean(task, newStatus);
-
+            task.Description = taskUpdateDTO.Description;
+            task.ToDo = taskUpdateDTO.ToDo;
+            task.Doing = taskUpdateDTO.Doing;
+            task.Done = taskUpdateDTO.Done;
+            task.Testing = taskUpdateDTO.Testing;
+            task.Completed = taskUpdateDTO.Completed;
             task.DateTimeChange = DateTime.UtcNow;
-            task.UserChange = userRequesting;
+            task.UserChange = userInclusion;
 
             await _taskRepository.UpdateTaskAsync(task);
             return ConvertToDTO(task);
@@ -81,51 +76,6 @@ namespace KanbanProject.Services
                 AdminId = taskEntity.AdminId
             };
         }
-
-        private string GetCurrentStatus(TaskItem task)
-        {
-            if (task.ToDo) return "ToDo";
-            if (task.Doing) return "Doing";
-            if (task.Done) return "Done";
-            if (task.Testing) return "Testing";
-            if (task.Completed) return "Completed";
-            return "Unknown";
-        }
-
-        private bool IsNextStatusValid(string current, string next)
-        {
-            var allowedTransitions = new Dictionary<string, string>
-            {
-                { "ToDo", "Doing" },
-                { "Doing", "Done" },
-                { "Done", "Testing" },
-                { "Testing", "Completed" }
-            };
-            return allowedTransitions.TryGetValue(current, out var expectedNext) && expectedNext == next;
-        }
-
-        private void ResetAllStatus(TaskItem task)
-        {
-            task.ToDo = false;
-            task.Doing = false;
-            task.Done = false;
-            task.Testing = false;
-            task.Completed = false;
-        }
-
-        private void SetStatusBoolean(TaskItem task, string status)
-        {
-            switch (status)
-            {
-                case "ToDo": task.ToDo = true; break;
-                case "Doing": task.Doing = true; break;
-                case "Done": task.Done = true; break;
-                case "Testing": task.Testing = true; break;
-                case "Completed": task.Completed = true; break;
-                default: throw new InvalidOperationException("Status inválido.");
-            }
-        }
-
         private bool IsUserAdmin(string userRequesting)
         {
             return userRequesting.ToLower().Contains("admin");
