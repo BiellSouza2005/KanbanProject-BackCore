@@ -19,7 +19,6 @@ namespace KanbanProject.Services
             {
                 Description = dto.Description,
                 UserId = dto.UserId,
-                AdminId = dto.AdminId,
                 ToDo = true,
                 Doing = false,
                 Done = false,
@@ -72,10 +71,10 @@ namespace KanbanProject.Services
                 Done = taskEntity.Done,
                 Testing = taskEntity.Testing,
                 Completed = taskEntity.Completed,
-                UserId = taskEntity.UserId,
-                AdminId = taskEntity.AdminId
+                UserId = taskEntity.UserId
             };
         }
+
         private bool IsUserAdmin(string userRequesting)
         {
             return userRequesting.ToLower().Contains("admin");

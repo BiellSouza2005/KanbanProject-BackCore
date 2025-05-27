@@ -23,7 +23,6 @@ namespace KanbanProject.Configurations
             builder.Property(t => t.Completed).IsRequired();
 
             builder.Property(t => t.UserId).IsRequired();
-            builder.Property(t => t.AdminId).IsRequired(false);
 
             builder.Property(t => t.DateTimeInclusion).IsRequired();
             builder.Property(t => t.UserInclusion)
@@ -41,11 +40,6 @@ namespace KanbanProject.Configurations
                 .WithMany()
                 .HasForeignKey(t => t.UserId)
                 .OnDelete(DeleteBehavior.Restrict); 
-
-            builder.HasOne(t => t.Admin)
-                .WithMany()
-                .HasForeignKey(t => t.AdminId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
