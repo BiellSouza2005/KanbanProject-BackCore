@@ -18,7 +18,6 @@ namespace KanbanProject.Services
             var newTask = new TaskItem
             {
                 Description = dto.Description,
-                UserId = dto.UserId,
                 ToDo = true,
                 Doing = false,
                 Done = false,
@@ -41,6 +40,12 @@ namespace KanbanProject.Services
             return taskEntity == null ? null : ConvertToDTO(taskEntity);
         }
 
+        public async Task<IEnumerable<TaskResponseDTO>> GetTasksByUserIdAsync(int? userId)
+        {
+            var taskEntities = await _taskRepository.GetTasksByUserIdAsync(userId);
+            return taskEntities.Select(ConvertToDTO);
+        }
+
         public async Task<TaskResponseDTO?> UpdateTaskStatusAsync(int taskId, TaskUpdateDTO taskUpdateDTO, string userInclusion)
         {
             var task = await _taskRepository.GetTaskByIdAsync(taskId);
@@ -48,6 +53,7 @@ namespace KanbanProject.Services
                 return null;
 
             task.Description = taskUpdateDTO.Description;
+            task.UserId = taskUpdateDTO.UserId;
             task.ToDo = taskUpdateDTO.ToDo;
             task.Doing = taskUpdateDTO.Doing;
             task.Done = taskUpdateDTO.Done;

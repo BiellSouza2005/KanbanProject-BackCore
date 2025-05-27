@@ -22,8 +22,6 @@ namespace KanbanProject.Configurations
             builder.Property(t => t.Testing).IsRequired();
             builder.Property(t => t.Completed).IsRequired();
 
-            builder.Property(t => t.UserId).IsRequired();
-
             builder.Property(t => t.DateTimeInclusion).IsRequired();
             builder.Property(t => t.UserInclusion)
                 .IsRequired()

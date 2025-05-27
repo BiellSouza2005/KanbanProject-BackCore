@@ -9,7 +9,6 @@ namespace KanbanProject.Data.DTOs.Task
         public bool Done { get; set; }
         public bool Testing { get; set; }
         public bool Completed { get; set; }
-        public int UserId { get; set; }
-        public int? AdminId { get; set; }
+        public int? UserId { get; set; }
     }
 }

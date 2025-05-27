@@ -10,6 +10,7 @@ namespace KanbanProject.Repositories.Interfaces
     {
         Task<IEnumerable<TaskEntity>> GetAllTasksAsync();
         Task<TaskEntity> GetTaskByIdAsync(int id);
+        Task<IEnumerable<TaskItem>> GetTasksByUserIdAsync(int? userId);
         Task AddTaskAsync(TaskEntity task);
         Task UpdateTaskAsync(TaskEntity task);
         Task DeleteTaskAsync(TaskEntity task);

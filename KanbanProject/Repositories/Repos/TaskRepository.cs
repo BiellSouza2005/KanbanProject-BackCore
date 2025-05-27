@@ -24,6 +24,13 @@ namespace KanbanProject.Repositories
             return await _context.Tasks.FindAsync(id);
         }
 
+        public async Task<IEnumerable<TaskItem>> GetTasksByUserIdAsync(int? userId)
+        {
+            return await _context.Tasks
+                .Where(t => t.UserId == userId)
+                .ToListAsync();
+        }
+
         public async Task AddTaskAsync(TaskItem task)
         {
             await _context.Tasks.AddAsync(task);

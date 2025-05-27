@@ -36,6 +36,18 @@ namespace KanbanProject.Controllers
 
             return Ok(taskDto);
         }
+
+        [HttpGet("user")]
+        public async Task<IActionResult> GetTasksByUserId([FromQuery] int? userId)
+        {
+            var taskDtos = await _taskService.GetTasksByUserIdAsync(userId);
+
+            if (!taskDtos.Any())
+                return NotFound();
+
+            return Ok(taskDtos);
+        }
+
         [HttpPut("{id}/status")]
         public async Task<IActionResult> UpdateStatus(int id, [FromBody] TaskUpdateDTO taskUpdateDto, [FromHeader(Name = "User-Inclusion")] string userInclusion)
         {

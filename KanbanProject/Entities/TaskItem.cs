@@ -12,7 +12,7 @@ namespace KanbanProject.Entities
         public bool Testing { get; set; } = false;
         public bool Completed { get; set; } = false;
 
-        public int UserId { get; set; } // colaborador
+        public int? UserId { get; set; } // colaborador
         [ForeignKey("UserId")]
         public User User { get; set; }
         public DateTime DateTimeInclusion { get; set; }
