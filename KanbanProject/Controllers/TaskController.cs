@@ -48,7 +48,7 @@ namespace KanbanProject.Controllers
             return Ok(taskDtos);
         }
 
-        [HttpPut("/status")]
+        [HttpPut("/api/Tasks/status/{id}")]
         public async Task<IActionResult> UpdateStatus(int id, [FromBody] TaskUpdateDTO taskUpdateDto, [FromHeader(Name = "User-Inclusion")] string userInclusion)
         {
             try
