@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace KanbanProject.Data.Migrations
+namespace KanbanProject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250422173707_CreateKanbanProjectDB")]
-    partial class CreateKanbanProjectDB
+    [Migration("20250527203321_MakeUserIdFieldNullable")]
+    partial class MakeUserIdFieldNullable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,6 +63,63 @@ namespace KanbanProject.Data.Migrations
                     b.ToTable("Logins");
                 });
 
+            modelBuilder.Entity("KanbanProject.Entities.TaskItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Completed")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DateTimeChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateTimeInclusion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("Doing")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Done")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Testing")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ToDo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserChange")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserInclusion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Tasks", (string)null);
+                });
+
             modelBuilder.Entity("KanbanProject.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -92,6 +149,11 @@ namespace KanbanProject.Data.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
+                    b.Property<bool>("IsAdmin")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -113,6 +175,16 @@ namespace KanbanProject.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("KanbanProject.Entities.TaskItem", b =>
+                {
+                    b.HasOne("KanbanProject.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
