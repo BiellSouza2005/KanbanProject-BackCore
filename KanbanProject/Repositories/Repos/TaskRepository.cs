@@ -48,5 +48,6 @@ namespace KanbanProject.Repositories
             _context.Tasks.Remove(task);
             await _context.SaveChangesAsync();
         }
+
     }
 }

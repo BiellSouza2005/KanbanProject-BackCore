@@ -37,14 +37,17 @@ namespace KanbanProject.Services
         public async Task<TaskResponseDTO?> GetTaskByIdAsync(int id)
         {
             var taskEntity = await _taskRepository.GetTaskByIdAsync(id);
-            return taskEntity == null ? null : ConvertToDTO(taskEntity);
+            return taskEntity == null || !taskEntity.IsActive ? null : ConvertToDTO(taskEntity);
         }
 
         public async Task<IEnumerable<TaskResponseDTO>> GetTasksByUserIdAsync(int? userId)
         {
             var taskEntities = await _taskRepository.GetTasksByUserIdAsync(userId);
-            return taskEntities.Select(ConvertToDTO);
+            return taskEntities
+                .Where(t => t.IsActive)
+                .Select(ConvertToDTO);
         }
+
 
         public async Task<TaskResponseDTO?> UpdateTaskStatusAsync(int taskId, TaskUpdateDTO taskUpdateDTO, string userInclusion)
         {
@@ -85,5 +88,30 @@ namespace KanbanProject.Services
         {
             return userRequesting.ToLower().Contains("admin");
         }
+
+        public async Task<bool> DeleteTaskAsync(int id)
+        {
+            var task = await _taskRepository.GetTaskByIdAsync(id);
+            if (task == null)
+                return false;
+
+            await _taskRepository.DeleteTaskAsync(task);
+            return true;
+        }
+
+        public async Task<bool> DeactivateTaskAsync(int id)
+        {
+            var task = await _taskRepository.GetTaskByIdAsync(id);
+            if (task == null || !task.IsActive)
+                return false;
+
+            task.IsActive = false;
+            task.DateTimeChange = DateTime.UtcNow;
+            task.UserChange = "system"; // ou o usuário que desativou
+
+            await _taskRepository.UpdateTaskAsync(task);
+            return true;
+        }
+
     }
 }

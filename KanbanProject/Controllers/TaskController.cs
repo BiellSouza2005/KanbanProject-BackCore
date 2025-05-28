@@ -69,5 +69,30 @@ namespace KanbanProject.Controllers
             }
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTask(int id)
+        {
+            var task = await _taskService.GetTaskByIdAsync(id);
+            if (task == null)
+                return NotFound("Task não encontrada.");
+
+            var deleted = await _taskService.DeleteTaskAsync(id);
+            if (!deleted)
+                return StatusCode(500, "Erro ao deletar a task.");
+
+            return NoContent(); // 204
+        }
+
+        [HttpPatch("{id}/deactivate")]
+        public async Task<IActionResult> DeactivateTask(int id)
+        {
+            var updated = await _taskService.DeactivateTaskAsync(id);
+            if (!updated)
+                return NotFound("Task não encontrada ou já está desativada.");
+
+            return Ok("Task desativada com sucesso.");
+        }
+
+
     }
 }
