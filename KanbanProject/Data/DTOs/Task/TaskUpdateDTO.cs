@@ -11,5 +11,6 @@ namespace KanbanProject.Data.DTOs.Task
         public bool Done { get; set; }
         public bool Testing { get; set; }
         public bool Completed { get; set; }
+        public DateTime? DueDate { get; set; }
     }
 }

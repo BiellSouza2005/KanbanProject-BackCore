@@ -20,5 +20,6 @@ namespace KanbanProject.Entities
         public DateTime DateTimeChange { get; set; }
         public string UserChange { get; set; } = string.Empty;
         public bool IsActive { get; set; } = true;
+        public DateTime? DueDate { get; set; }
     }
 }
