@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KanbanProject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250530132317_addDueDateFieldInTaskConfigurationToNullable")]
-    partial class addDueDateFieldInTaskConfigurationToNullable
+    [Migration("20250531222453_MakeDueDateFieldNullabe")]
+    partial class MakeDueDateFieldNullabe
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

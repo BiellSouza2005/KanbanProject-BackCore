@@ -59,6 +59,7 @@ namespace KanbanProject.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ToDo = table.Column<bool>(type: "bit", nullable: false),
                     Doing = table.Column<bool>(type: "bit", nullable: false),
                     Done = table.Column<bool>(type: "bit", nullable: false),
