@@ -27,7 +27,8 @@ namespace KanbanProject.Services
                 UserInclusion = userInclusion,
                 DateTimeChange = DateTime.UtcNow,
                 UserChange = userInclusion,
-                IsActive = true
+                IsActive = true,
+                DueDate = dto.DueDate
             };
 
             await _taskRepository.AddTaskAsync(newTask);
@@ -62,6 +63,7 @@ namespace KanbanProject.Services
             task.Done = taskUpdateDTO.Done;
             task.Testing = taskUpdateDTO.Testing;
             task.Completed = taskUpdateDTO.Completed;
+            task.DueDate = taskUpdateDTO.DueDate;
             task.DateTimeChange = DateTime.UtcNow;
             task.UserChange = userInclusion;
 
@@ -80,7 +82,8 @@ namespace KanbanProject.Services
                 Done = taskEntity.Done,
                 Testing = taskEntity.Testing,
                 Completed = taskEntity.Completed,
-                UserId = taskEntity.UserId
+                UserId = taskEntity.UserId,
+                DueDate = taskEntity.DueDate
             };
         }
 
@@ -107,7 +110,7 @@ namespace KanbanProject.Services
 
             task.IsActive = false;
             task.DateTimeChange = DateTime.UtcNow;
-            task.UserChange = "system"; // ou o usuário que desativou
+            task.UserChange = "system"; // ou o usuï¿½rio que desativou
 
             await _taskRepository.UpdateTaskAsync(task);
             return true;

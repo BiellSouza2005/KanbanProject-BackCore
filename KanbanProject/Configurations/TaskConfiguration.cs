@@ -22,7 +22,10 @@ namespace KanbanProject.Configurations
             builder.Property(t => t.Testing).IsRequired();
             builder.Property(t => t.Completed).IsRequired();
 
-            builder.Property(t => t.DateTimeInclusion).IsRequired();
+            builder.Property(t => t.DueDate)
+                .IsRequired(false);
+
+            builder.Property(t => t.DateTimeInclusion).IsRequired();            
             builder.Property(t => t.UserInclusion)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -32,12 +35,13 @@ namespace KanbanProject.Configurations
                 .IsRequired()
                 .HasMaxLength(100);
 
+
             builder.Property(t => t.IsActive).IsRequired();
 
             builder.HasOne(t => t.User)
                 .WithMany()
                 .HasForeignKey(t => t.UserId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

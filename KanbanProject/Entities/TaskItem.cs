@@ -5,7 +5,7 @@ namespace KanbanProject.Entities
     public class TaskItem : Entity<int>
     {
         public string Description { get; set; } = string.Empty;
-
+        public DateTime? DueDate { get; set; }
         public bool ToDo { get; set; } = false;
         public bool Doing { get; set; } = false;
         public bool Done { get; set; } = false;
@@ -20,5 +20,6 @@ namespace KanbanProject.Entities
         public DateTime DateTimeChange { get; set; }
         public string UserChange { get; set; } = string.Empty;
         public bool IsActive { get; set; } = true;
+
     }
 }
