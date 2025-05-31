@@ -83,7 +83,7 @@ namespace KanbanProject.Controllers
             return NoContent(); // 204
         }
 
-        [HttpPatch("{id}/deactivate")]
+        [HttpPatch("/api/Tasks/deactivate/{id}")]
         public async Task<IActionResult> DeactivateTask(int id)
         {
             var updated = await _taskService.DeactivateTaskAsync(id);

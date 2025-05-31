@@ -86,6 +86,18 @@ public class UserController : ControllerBase
         if (user == null)
             return BadRequest("Usuário ou senha incorretos.");
 
-        return Ok(new { mensagem = "Login realizado com sucesso!", token = Guid.NewGuid(), user });
+        return Ok(new 
+        { 
+            mensagem = "Login realizado com sucesso!", 
+            token = Guid.NewGuid(), 
+            user = new
+            {
+                user.Id,
+                user.FirstName,
+                user.LastName,
+                user.Email,
+                user.IsAdmin
+            }
+        });
     }
 }
