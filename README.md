@@ -50,7 +50,12 @@ Siga os passos abaixo para configurar e executar o backend em seu ambiente local
     ```bash
     git clone [https://github.com/BiellSouza2005/KanbanProject-BackCore.git](https://github.com/BiellSouza2005/KanbanProject-BackCore.git)
     ```
-
+    * **⚠️ Observação Importante:** Certifique-se de que o repositório esteja na branch **master**, caso não esteja:
+      
+    ```bash
+    git checkout master
+    ```
+      
 2.  **Acesse a pasta do projeto:**
     ```bash
     cd KanbanProject-BackCore
